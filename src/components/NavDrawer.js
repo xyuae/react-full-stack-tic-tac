@@ -2,16 +2,15 @@ import React, {Component} from 'react'
 import Drawer from 'material-ui/Drawer'
 import MenuItem from 'material-ui/MenuItem'
 import Divider from 'material-ui/Divider'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import Menu from 'material-ui/svg-icons/navigation/menu'
-
-
+import {Link} from 'react-router'
+import {NavToggleButton} from '../styled/NavDrawer'
 
 class NavDrawer extends Component {
   constructor(props){
     super(props);
     this.state = {
-      open: false
+      open: true,
+      width: 250
     }
   } // constructor
 
@@ -26,13 +25,15 @@ class NavDrawer extends Component {
   render() {
     return (
       <div>
-        <FloatingActionButton>
-          <Menu
-            onTouchTap={this.toggle}
-          />
-        </FloatingActionButton>
+        <NavToggleButton
+          toggle={this.toggle}
+          width={this.state.width}
+          open={this.state.open}
+        />
+
         <Drawer
           open={this.state.open}
+          width={this.state.width}
         >
           <div
             style={{
@@ -43,12 +44,22 @@ class NavDrawer extends Component {
             LoginContainer
           </div>
           <Divider/>
-          <MenuItem
-            primaryText={'Play'}
-          />
-          <MenuItem
-            primaryText={'Profile'}
-          />
+          <Link
+            to={'/'}
+          >
+            <MenuItem
+              onTouchTap={this.toggle}
+              primaryText={'Play'}
+            />
+          </Link>
+          <Link
+            to={'/profile'}
+          >
+            <MenuItem
+              onTouchTap={this.toggle}
+              primaryText={'Profile'}
+            />
+          </Link>
         </Drawer>
 
       </div>
