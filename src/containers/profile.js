@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Container, Name, GameListHeader, GameList, GameRecord, Column, ColumnLabels} from '../styled/Profile'
-
+import Relay from 'react-relay/classic'
 
 class Profile extends Component {
 
@@ -26,6 +26,30 @@ class Profile extends Component {
       ] // games
     } // user
   } // defaultProps
+
+  get records(){
+    return this.props.user.games.map( (game, index) => {
+      return (
+        <GameRecord
+          key={index}
+          index={index}
+        >
+          <Column>
+            {(game.winner) ? 'Won!' : "Didn't win"}
+          </Column>
+          <Column>
+            "ROBOT"
+          </Column>
+          <Column>
+            "No"
+          </Column>
+          <Column>
+            {game.createdAt}
+          </Column>
+        </GameRecord> 
+      )
+    })  // return this.props.user.games.map
+  }
   render() {
     let {email} = this.props.user
     return (
@@ -51,10 +75,23 @@ class Profile extends Component {
               Date
             </Column>
           </ColumnLabels>
+          {this.records}
         </GameList>
       </Container>
     ) // return
   } // render
-} // class template
+} // class Profile
 
-export default Profile
+export default Relay.createContainer(
+  Profile, {
+    fragments: {
+      viewer: () => Relay.QL`
+        fragment on Viewer {
+          user {
+            id
+          }
+        }
+      `,
+    }
+  }
+)

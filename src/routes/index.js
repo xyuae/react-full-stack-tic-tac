@@ -3,6 +3,9 @@ import {Route, IndexRoute} from 'react-router'
 import Template from '../containers/template'
 import TicTacToe from '../containers/TicTacToe'
 import Profile from '../containers/profile'
+import Relay from 'react-relay/classic'
+
+const ViewerQueries = { viewer: () => Relay.QL`query { viewer }` }
 
 
 const createRoutes = () => {
@@ -10,16 +13,18 @@ const createRoutes = () => {
     <Route
       path='/'
       component={Template}
+      queries={ViewerQueries} 
     >
       <IndexRoute
         component={TicTacToe}
+        queries={ViewerQueries} 
       />
       <Route
         path={'/profile'}
-        component={Profile}/>
+        component={Profile}
+        queries={ViewerQueries} 
+      />  
     </Route>
-
-
   )
 }
 
